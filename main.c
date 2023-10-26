@@ -27,7 +27,10 @@ int clearScreen() {
 
 int main() {
   enableRawMode();
+
+  char charIn;
   while (1) {
+    charIn = getchar();
   }
   return EXIT_SUCCESS;
 }
