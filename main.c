@@ -1,3 +1,5 @@
+#include <ctype.h>
+#include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <termios.h>
@@ -13,7 +15,11 @@ int disableRawMode() {
 int enableRawMode() {
   tcgetattr(STDIN_FILENO, &ORIGINAL_TERM_SETTINGS);
   struct termios raw = ORIGINAL_TERM_SETTINGS;
-  raw.c_lflag &= ~(ECHO | ICANON);
+
+  raw.c_iflag &= ~(ICRNL | IXON | BRKINT | ICRNL | INPCK);
+  raw.c_oflag &= ~(OPOST);
+  raw.c_lflag &= ~(ECHO | ICANON | ISIG | IEXTEN);
+  raw.c_cflag & -~(CS8);
   tcsetattr(STDIN_FILENO, TCSAFLUSH, &raw);
 
   atexit((void *)disableRawMode);
@@ -30,7 +36,17 @@ int main() {
 
   char charIn;
   while (1) {
-    charIn = getchar();
+    read(STDIN_FILENO, &charIn, 1);
+
+    if (charIn == 3) {
+      break;
+    }
+
+    if (iscntrl(charIn)) {
+      printf("%d\r\n", charIn);
+    } else {
+      printf("%d ('%c')\r\n", charIn, charIn);
+    }
   }
   return EXIT_SUCCESS;
 }
