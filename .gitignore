@@ -50,3 +50,10 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+
+# build process artefacts
+lib
+Makefile
+*.make
+bin
+obj
