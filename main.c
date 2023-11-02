@@ -1,10 +1,13 @@
 #include <ctype.h>
+#include <pthread.h>
 #include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <termios.h>
 #include <unistd.h>
 
+pthread_t INPUT_THREAD;
+pthread_t WORKER_THREAD;
 struct termios ORIGINAL_TERM_SETTINGS;
 
 int disableRawMode() {
@@ -31,8 +34,7 @@ int clearScreen() {
   return EXIT_SUCCESS;
 }
 
-int main() {
-  enableRawMode();
+int handleInput() {
 
   char charIn;
   while (1) {
@@ -48,5 +50,13 @@ int main() {
       printf("%d ('%c')\r\n", charIn, charIn);
     }
   }
+  return EXIT_SUCCESS;
+}
+
+int main() {
+
+  enableRawMode();
+  pthread_create(&INPUT_THREAD, NULL, (void *)handleInput, NULL);
+
   return EXIT_SUCCESS;
 }
