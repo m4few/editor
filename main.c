@@ -64,12 +64,17 @@ int main() {
   enableRawMode();
   clearScreen();
 
+  FILE *file = fopen("test.txt", "r");
+  int fileLength = fileGetBufferLength(file);
+  char fileBuffer[fileLength];
+  fileReadIn(file, fileBuffer, fileLength);
+  write(STDIN_FILENO, fileBuffer, fileLength);
+
   threadPool mainPool = THREAD_POOL_INIT;
   threadPoolCreate(&mainPool, 4);
   work_t inputWork = {(void *)handleInput, NULL};
   threadPoolEnqueue(&mainPool, &inputWork);
 
   threadPoolRun(&mainPool);
-
   return EXIT_SUCCESS;
 }

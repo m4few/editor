@@ -1,17 +1,34 @@
 #include "fileHandling.h"
 
-int fileGetLength(FILE *fp) {
-  fseek(fp, 0L, SEEK_END);
-  int32_t size = ftell(fp);
+// if a new line exists without a line break, add 1
+int fileGetBufferLength(FILE *fp) {
+  int length = 0;
+  char last = '\0';
+  for (char c = getc(fp); c != EOF; c = getc(fp)) {
+    if (c == '\n' && last != '\r') {
+      length++;
+    }
+    length++;
+    last = c;
+  }
   rewind(fp);
-
-  return size;
+  return length;
 }
 
 int fileReadIn(FILE *fp, char *buffer, int size) {
   if (fp == NULL) {
     return EXIT_FAILURE;
   }
-  fgets(buffer, size, fp);
+
+  int i = 0;
+  for (char c = getc(fp); c != EOF; c = getc(fp)) {
+    if (c == '\n') {
+      buffer[i] = '\r';
+      i++;
+    }
+    buffer[i] = c;
+    i++;
+  }
+
   return EXIT_SUCCESS;
 }

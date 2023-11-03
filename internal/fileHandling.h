@@ -2,5 +2,5 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int fileGetLength(FILE *fp);
+int fileGetBufferLength(FILE *fp);
 int fileReadIn(FILE *fp, char *buffer, int size);
