@@ -6,7 +6,7 @@
 #include <termios.h>
 #include <unistd.h>
 
-#include "lib/tPool.h"
+#include "external/tPool.h"
 
 pthread_t INPUT_THREAD;
 pthread_t WORKER_THREAD;
