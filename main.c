@@ -7,6 +7,7 @@
 #include <unistd.h>
 
 #include "external/tPool.h"
+#include "internal/fileHandling.h"
 
 pthread_t INPUT_THREAD;
 pthread_t WORKER_THREAD;
@@ -32,7 +33,9 @@ int enableRawMode() {
 }
 
 int clearScreen() {
-  printf("%s", "\e[1;1H\e[2J");
+
+  write(STDIN_FILENO, "\x1b[2J", sizeof("\x1b[2J"));
+  write(STDOUT_FILENO, "\x1b[1;1H", sizeof("\x1b[1;1H"));
   return EXIT_SUCCESS;
 }
 
@@ -59,10 +62,11 @@ int handleInput() {
 int main() {
 
   enableRawMode();
+  clearScreen();
+
   threadPool mainPool = THREAD_POOL_INIT;
   threadPoolCreate(&mainPool, 4);
   work_t inputWork = {(void *)handleInput, NULL};
-
   threadPoolEnqueue(&mainPool, &inputWork);
 
   threadPoolRun(&mainPool);
