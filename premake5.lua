@@ -5,14 +5,14 @@ configurations({ "Debug", "Release" })
 
 os.execute("rm -rf lib")
 os.execute("git clone " .. THREAD_REPO)
-os.execute("mv c-thread-pool lib")
+os.execute("mv c-thread-pool external")
 
 project("editor")
 kind("ConsoleApp")
 language("C")
 targetdir("bin/%{cfg.buildcfg}")
 
-files({ "**.h", "**.c", "lib/**.c" })
+files({ "**.h", "**.c", "external/**.c", "internal/**.c" })
 
 filter("configurations:Debug")
 defines({ "DEBUG" })

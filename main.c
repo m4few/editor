@@ -6,6 +6,8 @@
 #include <termios.h>
 #include <unistd.h>
 
+#include "lib/tPool.h"
+
 pthread_t INPUT_THREAD;
 pthread_t WORKER_THREAD;
 struct termios ORIGINAL_TERM_SETTINGS;
@@ -41,6 +43,7 @@ int handleInput() {
     read(STDIN_FILENO, &charIn, 1);
 
     if (charIn == 3) {
+      disableRawMode();
       break;
     }
 
@@ -56,7 +59,13 @@ int handleInput() {
 int main() {
 
   enableRawMode();
-  pthread_create(&INPUT_THREAD, NULL, (void *)handleInput, NULL);
+  threadPool mainPool = THREAD_POOL_INIT;
+  threadPoolCreate(&mainPool, 4);
+  work_t inputWork = {(void *)handleInput, NULL};
+
+  threadPoolEnqueue(&mainPool, &inputWork);
+
+  threadPoolRun(&mainPool);
 
   return EXIT_SUCCESS;
 }
