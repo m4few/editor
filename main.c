@@ -25,10 +25,30 @@ int enableRawMode() {
   raw.c_iflag &= ~(ICRNL | IXON | BRKINT | ICRNL | INPCK);
   raw.c_oflag &= ~(OPOST);
   raw.c_lflag &= ~(ECHO | ICANON | ISIG | IEXTEN);
-  raw.c_cflag & -~(CS8);
+  raw.c_cflag &= ~(CS8);
   tcsetattr(STDIN_FILENO, TCSAFLUSH, &raw);
 
   atexit((void *)disableRawMode);
+  return EXIT_SUCCESS;
+}
+
+int cursorUp() {
+  write(STDIN_FILENO, "\x1b[A", sizeof("\x1b[A"));
+  return EXIT_SUCCESS;
+}
+
+int cursorDown() {
+  write(STDIN_FILENO, "\x1b[B", sizeof("\x1b[B"));
+  return EXIT_SUCCESS;
+}
+
+int cursorLeft() {
+  write(STDIN_FILENO, "\x1b[C", sizeof("\x1b[C"));
+  return EXIT_SUCCESS;
+}
+
+int cursorRight() {
+  write(STDIN_FILENO, "\x1b[D", sizeof("\x1b[D"));
   return EXIT_SUCCESS;
 }
 
@@ -47,14 +67,35 @@ int handleInput() {
 
     if (charIn == 3) {
       disableRawMode();
-      break;
+      continue;
+    }
+
+    if (charIn == 11) {
+      cursorUp();
+      continue;
+    }
+    if (charIn == 10) {
+      cursorDown();
+      continue;
+    }
+    if (charIn == 12) {
+      cursorLeft();
+      continue;
+    }
+    if (charIn == 8) {
+      cursorRight();
+      continue;
+    }
+
+    if (charIn == 'x') {
+      backspace();
+      continue;
     }
 
     if (iscntrl(charIn)) {
-      printf("%d\r\n", charIn);
-    } else {
-      printf("%d ('%c')\r\n", charIn, charIn);
+      continue;
     }
+    write(STDIN_FILENO, &charIn, sizeof(char));
   }
   return EXIT_SUCCESS;
 }
