@@ -18,6 +18,28 @@ int fileMakeLineHandles(openFile *fp) {
   return EXIT_SUCCESS;
 }
 
+int fileMakeLineBuffers(openFile *fp) {
+  int lineLength = 0;
+  int lineCount = 0;
+
+  char last = '\0';
+  for (char c = getc(fp->handle); c != EOF; c = getc(fp->handle)) {
+    lineLength++;
+    if (c == '\n') {
+      if (last != '\r') {
+        lineLength++;
+      }
+      fp->lines[lineCount].buffer = malloc(sizeof(char) * lineLength);
+      fp->lines[lineCount].length = lineLength;
+      lineLength = 0;
+      lineCount++;
+    }
+    last = c;
+  }
+  rewind(fp->handle);
+  return EXIT_SUCCESS;
+}
+
 // if a new line exists without a line break, add 1
 int fileGetBufferLength(FILE *fp) {
   int length = 0;
