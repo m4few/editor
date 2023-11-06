@@ -67,6 +67,12 @@ int fileFillBuffers(openFile *fp) {
   return EXIT_SUCCESS;
 }
 
+line *fileGetLine(openFile *fp, int i) { return fp->lines + i; }
+
+// TODO: MIGRATE TO ABOVE FUNCTIONS AND REMOVE BELOW
+//  ... .. .. . . .. .  OLD . .. . .. . . .. . . . .
+//  ================================================
+
 // if a new line exists without a line break, add 1
 int fileGetBufferLength(FILE *fp) {
   int length = 0;
