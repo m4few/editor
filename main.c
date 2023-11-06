@@ -105,11 +105,17 @@ int main() {
   enableRawMode();
   clearScreen();
 
-  FILE *file = fopen("test.txt", "r");
-  int fileLength = fileGetBufferLength(file);
-  char fileBuffer[fileLength];
-  fileReadIn(file, fileBuffer, fileLength);
-  write(STDIN_FILENO, fileBuffer, fileLength);
+  openFile fp;
+  fp.handle = fopen("test.txt", "r");
+  fileCountLines(&fp);
+  fileMakeLineHandles(&fp);
+  fileMakeLineBuffers(&fp);
+  fileFillBuffers(&fp);
+
+  for (int i = 0; i < fp.lineCount; i++) {
+    line ln = *fileGetLine(&fp, i);
+    write(STDOUT_FILENO, ln.buffer, ln.length);
+  }
 
   threadPool mainPool = THREAD_POOL_INIT;
   threadPoolCreate(&mainPool, 4);
