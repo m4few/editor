@@ -88,7 +88,7 @@ int handleInput() {
     }
 
     if (charIn == 'x') {
-      backspace();
+      // backspace();
       continue;
     }
 
