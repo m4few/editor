@@ -1,5 +1,23 @@
 #include "fileHandling.h"
 
+int fileCountLines(openFile *fp) {
+  int lineCount = 0;
+
+  for (char c = getc(fp->handle); c != EOF; c = getc(fp->handle)) {
+    if (c == '\n') {
+      lineCount++;
+    }
+  }
+  fp->lineCount = lineCount;
+  rewind(fp->handle);
+  return EXIT_SUCCESS;
+}
+
+int fileMakeLineHandles(openFile *fp) {
+  fp->lines = malloc(sizeof(line) * fp->lineCount);
+  return EXIT_SUCCESS;
+}
+
 // if a new line exists without a line break, add 1
 int fileGetBufferLength(FILE *fp) {
   int length = 0;
