@@ -15,12 +15,9 @@ int fileGetBufferLength(openFile *fp) {
   return EXIT_SUCCESS;
 }
 
-int fileMakeBuffer(openFile *fp) {
-  fp->buffer = malloc(sizeof(char) * fp->bufferLength);
-  return EXIT_SUCCESS;
-}
-
 int fileFillBuffer(openFile *fp) {
+  fp->buffer = malloc(sizeof(char) * fp->bufferLength);
+
   char last = '\0';
   int i = 0;
   for (char c = getc(fp->handle); c != EOF; c = getc(fp->handle)) {
