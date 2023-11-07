@@ -93,6 +93,7 @@ int handleInput() {
     }
 
     if (iscntrl(charIn)) {
+
       continue;
     }
     write(STDIN_FILENO, &charIn, sizeof(char));
@@ -107,15 +108,12 @@ int main() {
 
   openFile fp;
   fp.handle = fopen("test.txt", "r");
-  fileCountLines(&fp);
-  fileMakeLineHandles(&fp);
-  fileMakeLineBuffers(&fp);
-  fileFillBuffers(&fp);
 
+  /*
   for (int i = 0; i < fp.lineCount; i++) {
-    line ln = *fileGetLine(&fp, i);
     write(STDOUT_FILENO, ln.buffer, ln.length);
   }
+  */
 
   threadPool mainPool = THREAD_POOL_INIT;
   threadPoolCreate(&mainPool, 4);

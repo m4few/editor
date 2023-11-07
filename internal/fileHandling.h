@@ -3,18 +3,16 @@
 #include <stdlib.h>
 
 typedef struct {
-  char *buffer;
-  int length;
-} line;
-
-typedef struct {
   FILE *handle;
+  char *buffer;
+  int totalLength;
   int lineCount;
-  line *lines;
+  int *lineLengths;
 } openFile;
 
+int fileGetBufferLength(openFile *fp);
+int fileMakeBuffer(openFile *fp);
+int fileFillBuffer(openFile *fp);
 int fileCountLines(openFile *fp);
-int fileMakeLineHandles(openFile *fp);
-int fileMakeLineBuffers(openFile *fp);
-int fileFillBuffers(openFile *fp);
-line *fileGetLine(openFile *fp, int i);
+int fileMakeLineLengthArray(openFile *fp);
+int fielGetLineLengths(openFile *fp);
