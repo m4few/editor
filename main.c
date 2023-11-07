@@ -108,12 +108,11 @@ int main() {
 
   openFile fp;
   fp.handle = fopen("test.txt", "r");
+  fileGetLineCount(&fp);
+  fileGetBufferLength(&fp);
+  fileFillBuffer(&fp);
 
-  /*
-  for (int i = 0; i < fp.lineCount; i++) {
-    write(STDOUT_FILENO, ln.buffer, ln.length);
-  }
-  */
+  write(STDOUT_FILENO, fp.buffer, fp.bufferLength);
 
   threadPool mainPool = THREAD_POOL_INIT;
   threadPoolCreate(&mainPool, 4);
