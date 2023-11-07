@@ -11,12 +11,12 @@ int fileGetBufferLength(openFile *fp) {
     last = c;
   }
   rewind(fp->handle);
-  fp->totalLength = length;
+  fp->bufferLength = length;
   return EXIT_SUCCESS;
 }
 
 int fileMakeBuffer(openFile *fp) {
-  fp->buffer = malloc(sizeof(char) * fp->totalLength);
+  fp->buffer = malloc(sizeof(char) * fp->bufferLength);
   return EXIT_SUCCESS;
 }
 
@@ -57,7 +57,7 @@ int fileGetLineLengths(openFile *fp) {
   int count = 0;
   int lineIndex = 0;
   printf("%s\n", "pleebnus :<<");
-  for (int buffIndex = 0; buffIndex < fp->totalLength; buffIndex++) {
+  for (int buffIndex = 0; buffIndex < fp->bufferLength; buffIndex++) {
     printf("%s\n", "pleebnus :<<");
     count++;
     if (fp->buffer[buffIndex] == '\n') {

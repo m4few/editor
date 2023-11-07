@@ -5,7 +5,7 @@
 typedef struct {
   FILE *handle;
   char *buffer;
-  int totalLength;
+  int bufferLength;
   int lineCount;
   int *lineLengths;
 } openFile;
