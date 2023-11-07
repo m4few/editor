@@ -13,6 +13,5 @@ typedef struct {
 int fileGetBufferLength(openFile *fp);
 int fileMakeBuffer(openFile *fp);
 int fileFillBuffer(openFile *fp);
-int fileCountLines(openFile *fp);
-int fileMakeLineLengthArray(openFile *fp);
+int fileGetLineCount(openFile *fp);
 int fielGetLineLengths(openFile *fp);

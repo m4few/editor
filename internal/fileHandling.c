@@ -36,7 +36,7 @@ int fileFillBuffer(openFile *fp) {
   return EXIT_SUCCESS;
 }
 
-int fileCountLines(openFile *fp) {
+int fileGetLineCount(openFile *fp) {
   int lineCount = 0;
   for (char c = getc(fp->handle); c != EOF; c = getc(fp->handle)) {
     if (c == '\n') {
@@ -44,12 +44,9 @@ int fileCountLines(openFile *fp) {
     }
   }
   fp->lineCount = lineCount;
+  fp->lineLengths = malloc(sizeof(int) * lineCount);
   rewind(fp->handle);
-  return EXIT_SUCCESS;
-}
 
-int fileMakeLineLengthArray(openFile *fp) {
-  fp->lineLengths = malloc(sizeof(int) * fp->lineCount);
   return EXIT_SUCCESS;
 }
 
