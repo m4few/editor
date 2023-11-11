@@ -19,3 +19,23 @@ cursorPos cursorGetPos() {
 
   return c;
 }
+
+int cursorUp() {
+  write(STDIN_FILENO, "\x1b[A", sizeof("\x1b[A"));
+  return EXIT_SUCCESS;
+}
+
+int cursorDown() {
+  write(STDIN_FILENO, "\x1b[B", sizeof("\x1b[B"));
+  return EXIT_SUCCESS;
+}
+
+int cursorLeft() {
+  write(STDIN_FILENO, "\x1b[C", sizeof("\x1b[C"));
+  return EXIT_SUCCESS;
+}
+
+int cursorRight() {
+  write(STDIN_FILENO, "\x1b[D", sizeof("\x1b[D"));
+  return EXIT_SUCCESS;
+}
