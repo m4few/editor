@@ -13,6 +13,7 @@ language("C")
 targetdir("bin/%{cfg.buildcfg}")
 
 files({ "**.h", "**.c", "external/**.c", "internal/**.c" })
+links({ "m" })
 
 filter("configurations:Debug")
 defines({ "DEBUG" })
