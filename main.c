@@ -9,6 +9,11 @@
 #include "external/tPool.h"
 #include "internal/fileHandling.h"
 
+typedef struct {
+  int x;
+  int y;
+} cursorPos;
+
 pthread_t INPUT_THREAD;
 pthread_t WORKER_THREAD;
 struct termios ORIGINAL_TERM_SETTINGS;
@@ -30,6 +35,26 @@ int enableRawMode() {
 
   atexit((void *)disableRawMode);
   return EXIT_SUCCESS;
+}
+
+cursorPos cursorGetPos() {
+  write(STDIN_FILENO, "\x1b[6n", sizeof("\x1b[6n"));
+  char buff[32];
+  int i = 0;
+  while (1) {
+    read(STDIN_FILENO, buff + i, 1);
+    if (buff[i] == 'R') {
+      buff[i] = '\0';
+      break;
+    }
+    i++;
+  }
+
+  cursorPos c;
+
+  sscanf(buff + 2, "%d;%d", &c.y, &c.x);
+
+  return c;
 }
 
 int cursorUp() {
@@ -60,7 +85,6 @@ int clearScreen() {
 }
 
 int handleInput() {
-
   char charIn;
   while (1) {
     read(STDIN_FILENO, &charIn, 1);
@@ -89,6 +113,11 @@ int handleInput() {
 
     if (charIn == 'x') {
       // backspace();
+      // test
+      cursorPos c = cursorGetPos();
+      if (c.x > 10 || c.y > 5) {
+        write(STDIN_FILENO, "x", sizeof(char));
+      }
       continue;
     }
 
@@ -113,7 +142,6 @@ int main() {
   fileFillBuffer(&fp);
 
   write(STDOUT_FILENO, fp.buffer, fp.bufferLength);
-
   threadPool mainPool = THREAD_POOL_INIT;
   threadPoolCreate(&mainPool, 4);
   work_t inputWork = {(void *)handleInput, NULL};
