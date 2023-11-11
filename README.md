@@ -5,7 +5,7 @@ A simple text editor.
 * Install premake5
 * ```premake5 gmake2```
 * ```make```
-* ```./bin/debug/editor```  
+* ```./bin/debug/editor```
 
 ### Manual
 * ```git clone https://github.com/m4few/c-thread-pool```
