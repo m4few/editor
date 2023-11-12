@@ -76,11 +76,11 @@ int fileOverwriteChar(openFile *fp, int i, char x) {
 
 int cursorToCharIndex(openFile *fp, cursorPos cp) {
   int i = 0;
-  for (int lineIndex = 0; lineIndex < min(cp.y - 2, fp->lineCount);
+  for (int lineIndex = 0; lineIndex < min(cp.y - 1, fp->lineCount);
        lineIndex++) {
     i += fp->lineLengths[lineIndex];
   }
 
-  i += cp.x - 1;
+  i += cp.x - 2;
   return i;
 }
