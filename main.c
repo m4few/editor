@@ -39,7 +39,7 @@ int clearScreen() {
   return EXIT_SUCCESS;
 }
 
-int handleInput() {
+int handleInput(openFile *fp) {
   char charIn;
   while (1) {
     read(STDIN_FILENO, &charIn, 1);
@@ -81,6 +81,8 @@ int handleInput() {
       continue;
     }
     write(STDIN_FILENO, &charIn, sizeof(char));
+    printf("%d\n", cursorToCharIndex(fp, cursorGetPos()));
+    fileOverwriteChar(fp, cursorToCharIndex(fp, cursorGetPos()), charIn);
   }
   return EXIT_SUCCESS;
 }
@@ -92,14 +94,15 @@ int main() {
 
   openFile fp;
   fp.handle = fopen("test.txt", "r");
-  fileGetLineCount(&fp);
   fileGetBufferLength(&fp);
   fileFillBuffer(&fp);
+  fileGetLineCount(&fp);
+  fileGetLineLengths(&fp);
 
   write(STDOUT_FILENO, fp.buffer, fp.bufferLength);
   threadPool mainPool = THREAD_POOL_INIT;
   threadPoolCreate(&mainPool, 4);
-  work_t inputWork = {(void *)handleInput, NULL};
+  work_t inputWork = {(void *)handleInput, (void *)&fp, NULL};
   threadPoolEnqueue(&mainPool, &inputWork);
 
   threadPoolRun(&mainPool);
