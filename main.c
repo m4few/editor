@@ -81,8 +81,8 @@ int handleInput(openFile *fp) {
       continue;
     }
     write(STDIN_FILENO, &charIn, sizeof(char));
-    printf("%d\n", cursorToCharIndex(fp, cursorGetPos()));
     fileOverwriteChar(fp, cursorToCharIndex(fp, cursorGetPos()), charIn);
+    printf("\r\n\r\n\r\n\r\n\r\n%s", fp->buffer);
   }
   return EXIT_SUCCESS;
 }
