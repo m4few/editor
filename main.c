@@ -45,6 +45,7 @@ int handleInput(openFile *fp) {
     read(STDIN_FILENO, &charIn, 1);
 
     if (charIn == 3) {
+      fileWriteOut(fp);
       disableRawMode();
       continue;
     }
@@ -66,23 +67,12 @@ int handleInput(openFile *fp) {
       continue;
     }
 
-    if (charIn == 'x') {
-      // backspace();
-      // test
-      cursorPos c = cursorGetPos();
-      if (c.x > 10 || c.y > 5) {
-        write(STDIN_FILENO, "x", sizeof(char));
-      }
-      continue;
-    }
-
     if (iscntrl(charIn)) {
 
       continue;
     }
     write(STDIN_FILENO, &charIn, sizeof(char));
     fileOverwriteChar(fp, cursorToCharIndex(fp, cursorGetPos()), charIn);
-    printf("\r\n\r\n\r\n\r\n\r\n%s", fp->buffer);
   }
   return EXIT_SUCCESS;
 }
@@ -93,7 +83,7 @@ int main() {
   clearScreen();
 
   openFile fp;
-  fp.handle = fopen("test.txt", "r");
+  fp.handle = fopen("test.txt", "r+");
   fileGetBufferLength(&fp);
   fileFillBuffer(&fp);
   fileGetLineCount(&fp);

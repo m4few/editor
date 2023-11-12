@@ -15,3 +15,4 @@ int fileFillBuffer(openFile *fp);
 int fileGetLineCount(openFile *fp);
 int fileGetLineLengths(openFile *fp);
 int fileOverwriteChar(openFile *fp, int i, char x);
+int fileWriteOut(openFile *fp);

@@ -1,5 +1,6 @@
 #include "fileHandling.h"
 #include "input.h"
+#include <stdio.h>
 #include <stdlib.h>
 
 int min(int a, int b) { return a < b ? a : b; }
@@ -62,6 +63,13 @@ int fileGetLineLengths(openFile *fp) {
       count = 0;
     }
   }
+  return EXIT_SUCCESS;
+}
+
+int fileWriteOut(openFile *fp) {
+  fprintf(fp->handle, "%s", fp->buffer);
+  fclose(fp->handle);
+  fopen("test.", "r+");
   return EXIT_SUCCESS;
 }
 
