@@ -1,4 +1,8 @@
 #include "fileHandling.h"
+#include "input.h"
+#include <stdlib.h>
+
+int min(int a, int b) { return a < b ? a : b; }
 
 int fileGetBufferLength(openFile *fp) {
   int length = 0;
@@ -50,9 +54,7 @@ int fileGetLineCount(openFile *fp) {
 int fileGetLineLengths(openFile *fp) {
   int count = 0;
   int lineIndex = 0;
-  printf("%s\n", "pleebnus :<<");
   for (int buffIndex = 0; buffIndex < fp->bufferLength; buffIndex++) {
-    printf("%s\n", "pleebnus :<<");
     count++;
     if (fp->buffer[buffIndex] == '\n') {
       fp->lineLengths[lineIndex] = count;
@@ -61,4 +63,24 @@ int fileGetLineLengths(openFile *fp) {
     }
   }
   return EXIT_SUCCESS;
+}
+
+int fileOverwriteChar(openFile *fp, int i, char x) {
+  if (i > fp->bufferLength - 1) {
+    return EXIT_FAILURE;
+  }
+
+  fp->buffer[i] = x;
+  return EXIT_SUCCESS;
+}
+
+int cursorToCharIndex(openFile *fp, cursorPos cp) {
+  int i = 0;
+  for (int lineIndex = 0; lineIndex < min(cp.y - 2, fp->lineCount);
+       lineIndex++) {
+    i += fp->lineLengths[lineIndex];
+  }
+
+  i += cp.x - 1;
+  return i;
 }
