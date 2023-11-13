@@ -2,7 +2,7 @@
 #include "input.h"
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <string.h>
 int min(int a, int b) { return a < b ? a : b; }
 
 int fileGetBufferLength(openFile *fp) {
@@ -66,6 +66,15 @@ int fileGetLineLengths(openFile *fp) {
   return EXIT_SUCCESS;
 }
 
+int fileResizeBuffer(openFile *fp, double scale) {
+  char *temp = malloc(sizeof(char) * fp->bufferLength * scale);
+  memcpy(fp->buffer, temp, fp->bufferLength);
+  free(fp->buffer);
+  fp->bufferLength *= scale;
+  fp->buffer = temp;
+  return EXIT_SUCCESS;
+}
+
 int fileWriteOut(openFile *fp) {
   fprintf(fp->handle, "%s", fp->buffer);
   fclose(fp->handle);
@@ -79,6 +88,19 @@ int fileOverwriteChar(openFile *fp, int i, char x) {
   }
 
   fp->buffer[i + 1] = x;
+  return EXIT_SUCCESS;
+}
+
+int fileInsertChar(openFile *fp, cursorPos cp, char c) {
+  if (fp->bufferLength == fp->charCount) {
+    fileResizeBuffer(fp, 1.5);
+  }
+  fp->charCount++;
+  int i = cursorToCharIndex(fp, cp);
+  for (int j = fp->charCount; j > i; j--) {
+    fp->buffer[j] = fp->buffer[j - 1];
+  }
+  fp->buffer[i] = c;
   return EXIT_SUCCESS;
 }
 

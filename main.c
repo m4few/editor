@@ -88,6 +88,7 @@ int handleInput(openFile *fp) {
       continue;
     }
     fileOverwriteChar(fp, cursorToCharIndex(fp, cursorGetPos()), charIn);
+    fileInsertChar(fp, cursorGetPos(), charIn);
     refreshScreen(fp);
   }
   return EXIT_SUCCESS;
