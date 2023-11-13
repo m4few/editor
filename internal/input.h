@@ -15,3 +15,5 @@ int cursorUp();
 int cursorDown();
 int cursorLeft();
 int cursorRight();
+int cursorLoadPos();
+int cursorSavePos();

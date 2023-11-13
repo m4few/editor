@@ -39,3 +39,13 @@ int cursorRight() {
   write(STDIN_FILENO, "\x1b[D", sizeof("\x1b[D"));
   return EXIT_SUCCESS;
 }
+
+int cursorSavePos() {
+  write(STDIN_FILENO, "\e[s", sizeof("\e[s"));
+  return EXIT_SUCCESS;
+}
+
+int cursorLoadPos() {
+  write(STDIN_FILENO, "\e[u", sizeof("\e[u"));
+  return EXIT_SUCCESS;
+}
