@@ -39,6 +39,14 @@ int clearScreen() {
   return EXIT_SUCCESS;
 }
 
+int refreshScreen(openFile *fp) {
+  cursorSavePos();
+  clearScreen();
+  write(STDIN_FILENO, fp->buffer, fp->bufferLength);
+  cursorLoadPos();
+  return EXIT_SUCCESS;
+}
+
 int handleInput(openFile *fp) {
   char charIn;
   while (1) {
@@ -67,12 +75,20 @@ int handleInput(openFile *fp) {
       continue;
     }
 
+    if (charIn == 'x') {
+      cursorLoadPos();
+    }
+
+    if (charIn == 'z') {
+      cursorSavePos();
+    }
+
     if (iscntrl(charIn)) {
 
       continue;
     }
-    write(STDIN_FILENO, &charIn, sizeof(char));
     fileOverwriteChar(fp, cursorToCharIndex(fp, cursorGetPos()), charIn);
+    refreshScreen(fp);
   }
   return EXIT_SUCCESS;
 }
