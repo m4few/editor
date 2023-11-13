@@ -78,7 +78,7 @@ int fileOverwriteChar(openFile *fp, int i, char x) {
     return EXIT_FAILURE;
   }
 
-  fp->buffer[i] = x;
+  fp->buffer[i + 1] = x;
   return EXIT_SUCCESS;
 }
 
