@@ -67,11 +67,8 @@ int fileGetLineLengths(openFile *fp) {
 }
 
 int fileResizeBuffer(openFile *fp, double scale) {
-  char *temp = malloc(sizeof(char) * fp->bufferLength * scale);
-  memcpy(fp->buffer, temp, fp->bufferLength);
-  free(fp->buffer);
   fp->bufferLength *= scale;
-  fp->buffer = temp;
+  fp->buffer = realloc(fp, fp->bufferLength);
   return EXIT_SUCCESS;
 }
 
