@@ -20,3 +20,4 @@ int fileGetLineLengths(openFile *fp);
 int fileOverwriteChar(openFile *fp, int i, char x);
 int fileInsertChar(openFile *fp, cursorPos cp, char x);
 int fileWriteOut(openFile *fp);
+int fileResizeBuffer(openFile *fp, double scale);

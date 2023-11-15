@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 int min(int a, int b) { return a < b ? a : b; }
 
 int fileGetBufferLength(openFile *fp) {
@@ -17,6 +18,7 @@ int fileGetBufferLength(openFile *fp) {
   }
   rewind(fp->handle);
   fp->bufferLength = length;
+  fp->charCount = length;
   return EXIT_SUCCESS;
 }
 
@@ -68,7 +70,8 @@ int fileGetLineLengths(openFile *fp) {
 
 int fileResizeBuffer(openFile *fp, double scale) {
   fp->bufferLength *= scale;
-  fp->buffer = realloc(fp, fp->bufferLength);
+  fprintf(stdout, "\r\n\r\n\r\n\r\n%d", fp->bufferLength);
+  fp->buffer = realloc(fp->buffer, sizeof(char) * fp->bufferLength);
   return EXIT_SUCCESS;
 }
 
@@ -89,14 +92,13 @@ int fileOverwriteChar(openFile *fp, int i, char x) {
 }
 
 int fileInsertChar(openFile *fp, cursorPos cp, char c) {
-  if (fp->bufferLength == fp->charCount) {
-    fileResizeBuffer(fp, 1.5);
-  }
-  fp->charCount++;
   int i = cursorToCharIndex(fp, cp);
-  for (int j = fp->charCount; j > i; j--) {
-    fp->buffer[j] = fp->buffer[j - 1];
+  if (fp->bufferLength == fp->charCount) {
+    fileResizeBuffer(fp, 2);
   }
+  memmove(fp->buffer + i + 1, fp->buffer + i, fp->charCount - i);
+  fp->charCount++;
+  fp->lineLengths[cp.y]++;
   fp->buffer[i] = c;
   return EXIT_SUCCESS;
 }

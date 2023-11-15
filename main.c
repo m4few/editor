@@ -83,13 +83,23 @@ int handleInput(openFile *fp) {
       cursorSavePos();
     }
 
+    if (charIn == 13) {
+      fprintf(stderr, "%d %d", fp->charCount, fp->bufferLength);
+      // NOTE: this needs a cursorNewLine function that makes new lines at the
+      // end of the file and inserts \r\n
+      cursorDown();
+    }
+
     if (iscntrl(charIn)) {
 
-      continue;
+      // continue;
     }
-    fileOverwriteChar(fp, cursorToCharIndex(fp, cursorGetPos()), charIn);
+
     fileInsertChar(fp, cursorGetPos(), charIn);
     refreshScreen(fp);
+    cursorSavePos();
+    fprintf(stdout, "\r\n\r\n\r\n%d\r\n", fp->charCount);
+    cursorLoadPos();
   }
   return EXIT_SUCCESS;
 }
