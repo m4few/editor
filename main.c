@@ -94,12 +94,9 @@ int handleInput(openFile *fp) {
 
       // continue;
     }
-
     fileInsertChar(fp, cursorGetPos(), charIn);
     refreshScreen(fp);
-    cursorSavePos();
-    fprintf(stdout, "\r\n\r\n\r\n%d\r\n", fp->charCount);
-    cursorLoadPos();
+    cursorRight();
   }
   return EXIT_SUCCESS;
 }

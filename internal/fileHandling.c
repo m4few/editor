@@ -70,7 +70,6 @@ int fileGetLineLengths(openFile *fp) {
 
 int fileResizeBuffer(openFile *fp, double scale) {
   fp->bufferLength *= scale;
-  fprintf(stdout, "\r\n\r\n\r\n\r\n%d", fp->bufferLength);
   fp->buffer = realloc(fp->buffer, sizeof(char) * fp->bufferLength);
   return EXIT_SUCCESS;
 }
@@ -94,22 +93,22 @@ int fileOverwriteChar(openFile *fp, int i, char x) {
 int fileInsertChar(openFile *fp, cursorPos cp, char c) {
   int i = cursorToCharIndex(fp, cp);
   if (fp->bufferLength == fp->charCount) {
-    fileResizeBuffer(fp, 2);
+    fileResizeBuffer(fp, 1.5);
   }
   memmove(fp->buffer + i + 1, fp->buffer + i, fp->charCount - i);
+  fp->buffer[i] = c;
   fp->charCount++;
   fp->lineLengths[cp.y]++;
-  fp->buffer[i] = c;
   return EXIT_SUCCESS;
 }
 
 int cursorToCharIndex(openFile *fp, cursorPos cp) {
   int i = 0;
-  for (int lineIndex = 0; lineIndex < min(cp.y - 1, fp->lineCount);
-       lineIndex++) {
+  for (int lineIndex = 0; lineIndex < cp.y - 1; lineIndex++) {
     i += fp->lineLengths[lineIndex];
   }
 
-  i += cp.x - 2;
+  // i += min(cp.x, fp->lineLengths[cp.y] - 3);
+  i += cp.x;
   return i;
 }

@@ -30,12 +30,12 @@ int cursorDown() {
   return EXIT_SUCCESS;
 }
 
-int cursorLeft() {
+int cursorRight() {
   write(STDIN_FILENO, "\x1b[C", sizeof("\x1b[C"));
   return EXIT_SUCCESS;
 }
 
-int cursorRight() {
+int cursorLeft() {
   write(STDIN_FILENO, "\x1b[D", sizeof("\x1b[D"));
   return EXIT_SUCCESS;
 }
