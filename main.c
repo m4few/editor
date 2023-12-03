@@ -67,11 +67,11 @@ int handleInput(openFile *fp) {
       continue;
     }
     if (charIn == 12) {
-      cursorLeft();
+      cursorRight();
       continue;
     }
     if (charIn == 8) {
-      cursorRight();
+      cursorLeft();
       continue;
     }
 
@@ -83,8 +83,13 @@ int handleInput(openFile *fp) {
       cursorSavePos();
     }
 
+    if (charIn == 127) {
+      cursorBackspace(fp);
+      refreshScreen(fp);
+      continue;
+    }
+
     if (charIn == 13) {
-      fprintf(stderr, "%d %d", fp->charCount, fp->bufferLength);
       // NOTE: this needs a cursorNewLine function that makes new lines at the
       // end of the file and inserts \r\n
       cursorDown();
