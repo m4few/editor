@@ -92,11 +92,17 @@ int fileOverwriteChar(openFile *fp, int i, char x) {
 
 int fileInsertChar(openFile *fp, cursorPos cp, char c) {
   int i = cursorToCharIndex(fp, cp);
+
+  if (cp.x > fp->lineLengths[cp.y]) {
+    cursorPos fakeCursor = {fp->lineLengths[cp.y] - 2, cp.y};
+    fileInsertChar(fp, fakeCursor, ' ');
+  }
+
   if (fp->bufferLength == fp->charCount) {
     fileResizeBuffer(fp, 1.5);
   }
-  memmove(fp->buffer + i + 1, fp->buffer + i, fp->charCount - i);
-  fp->buffer[i] = c;
+  memmove(fp->buffer + i, fp->buffer + i - 1, fp->charCount - i);
+  fp->buffer[i - 1] = c;
   fp->charCount++;
   fp->lineLengths[cp.y]++;
   return EXIT_SUCCESS;

@@ -57,3 +57,6 @@ Makefile
 *.make
 bin
 obj
+
+# test file
+test.txt

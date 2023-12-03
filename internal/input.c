@@ -1,4 +1,7 @@
 #include "input.h"
+#include "fileHandling.h"
+#include <stdlib.h>
+#include <unistd.h>
 
 cursorPos cursorGetPos() {
   write(STDIN_FILENO, "\x1b[6n", sizeof("\x1b[6n"));
@@ -47,5 +50,11 @@ int cursorSavePos() {
 
 int cursorLoadPos() {
   write(STDIN_FILENO, "\e[u", sizeof("\e[u"));
+  return EXIT_SUCCESS;
+}
+
+int cursorBackspace(openFile *fp) {
+  // needs memmove
+  cursorLeft();
   return EXIT_SUCCESS;
 }
