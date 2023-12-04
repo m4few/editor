@@ -84,7 +84,7 @@ int handleInput(openFile *fp) {
     }
 
     if (charIn == 127) {
-      cursorBackspace(fp);
+      cursorBackspace(fp, cursorGetPos());
       refreshScreen(fp);
       continue;
     }

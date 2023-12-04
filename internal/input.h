@@ -18,4 +18,4 @@ int cursorLeft();
 int cursorRight();
 int cursorLoadPos();
 int cursorSavePos();
-int cursorBackspace(openFile *fp);
+int cursorBackspace(openFile *fp, cursorPos cp);

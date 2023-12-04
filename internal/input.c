@@ -1,6 +1,7 @@
 #include "input.h"
 #include "fileHandling.h"
 #include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
 
 cursorPos cursorGetPos() {
@@ -53,8 +54,9 @@ int cursorLoadPos() {
   return EXIT_SUCCESS;
 }
 
-int cursorBackspace(openFile *fp) {
-  // needs memmove
+int cursorBackspace(openFile *fp, cursorPos cp) {
+  int i = cursorToCharIndex(fp, cp);
+  memmove(fp->buffer + i - 2, fp->buffer + i - 1, fp->charCount - i);
   cursorLeft();
   return EXIT_SUCCESS;
 }
