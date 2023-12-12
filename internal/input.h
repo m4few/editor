@@ -19,3 +19,4 @@ int cursorRight();
 int cursorLoadPos();
 int cursorSavePos();
 int cursorBackspace(openFile *fp, cursorPos cp);
+int cursorGoTo(openFile *fp, cursorPos goTo);

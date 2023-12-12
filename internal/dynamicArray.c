@@ -1,17 +1,4 @@
-#include <memory.h>
-#include <stdio.h>
-#include <stdlib.h>
-
-typedef union {
-  int int_le;
-  char char_le;
-} listElement;
-
-typedef struct {
-  int size;
-  int top;
-  listElement *data;
-} dynamicArray;
+#include "dynamicArray.h"
 
 dynamicArray dArrayInit(int length) {
 
